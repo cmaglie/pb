@@ -256,6 +256,19 @@ func (pb *ProgressBar) FinishPrint(str string) {
 	}
 }
 
+// FinishPrintOver prints the given string over the progress bar
+func (pb *ProgressBar) FinishPrintOver(str string) {
+	pb.mu.Lock()
+	pb.ShowCounters = false
+	pb.ShowPercent = false
+	pb.ShowFinalTime = false
+	pb.ShowBar = false
+	pb.mu.Unlock()
+	pb.Prefix(str)
+	pb.Postfix("")
+	pb.Finish()
+}
+
 // implement io.Writer
 func (pb *ProgressBar) Write(p []byte) (n int, err error) {
 	n = len(p)
