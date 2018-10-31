@@ -195,6 +195,8 @@ func (pb *ProgressBar) Format(format string) *ProgressBar {
 
 // Set bar refresh rate
 func (pb *ProgressBar) SetRefreshRate(rate time.Duration) *ProgressBar {
+	pb.mu.Lock()
+	defer pb.mu.Unlock()
 	pb.RefreshRate = rate
 	return pb
 }
@@ -203,12 +205,16 @@ func (pb *ProgressBar) SetRefreshRate(rate time.Duration) *ProgressBar {
 // bar.SetUnits(U_NO) - by default
 // bar.SetUnits(U_BYTES) - for Mb, Kb, etc
 func (pb *ProgressBar) SetUnits(units Units) *ProgressBar {
+	pb.mu.Lock()
+	defer pb.mu.Unlock()
 	pb.Units = units
 	return pb
 }
 
 // Set max width, if width is bigger than terminal width, will be ignored
 func (pb *ProgressBar) SetMaxWidth(width int) *ProgressBar {
+	pb.mu.Lock()
+	defer pb.mu.Unlock()
 	pb.Width = width
 	pb.ForceWidth = false
 	return pb
